@@ -9,9 +9,20 @@ const HeroSection = styled.section`
   display: flex;
   align-items: center;
   padding-top: 70px;
-  background: linear-gradient(135deg, var(--light-bg) 0%, rgba(58, 134, 255, 0.1) 100%);
+  background: linear-gradient(135deg, var(--dark-color) 0%, var(--dark-secondary) 100%);
   position: relative;
   overflow: hidden;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 50%);
+    z-index: 0;
+  }
 `;
 
 const HeroContainer = styled.div`
@@ -42,7 +53,7 @@ const HeroContent = styled.div`
 const SubHeading = styled.p`
   font-size: 1.2rem;
   font-weight: 500;
-  color: var(--accent-color);
+  color: var(--secondary-color);
   margin-bottom: 1rem;
 `;
 
@@ -51,6 +62,7 @@ const Heading = styled.h1`
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 1.5rem;
+  color: var(--light-color);
   
   @media screen and (max-width: 768px) {
     font-size: 2.5rem;
@@ -60,7 +72,7 @@ const Heading = styled.h1`
 const Description = styled.p`
   font-size: 1.1rem;
   line-height: 1.6;
-  color: var(--text-color);
+  color: var(--text-muted);
   margin-bottom: 2rem;
 `;
 
@@ -81,12 +93,12 @@ const PrimaryButton = styled.a`
   font-weight: 500;
   transition: var(--transition);
   display: inline-block;
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
   
   &:hover {
-    background: linear-gradient(45deg, #0056b3, var(--primary-color));
     transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.35);
   }
 `;
 
@@ -99,6 +111,7 @@ const SecondaryButton = styled.a`
   font-weight: 500;
   transition: var(--transition);
   display: inline-block;
+  cursor: pointer;
   
   &:hover {
     background-color: var(--primary-color);
@@ -120,11 +133,11 @@ const SocialIcons = styled.div`
 
 const SocialIcon = styled.a`
   font-size: 1.5rem;
-  color: var(--dark-color);
+  color: var(--text-color);
   transition: var(--transition);
   
   &:hover {
-    color: var(--accent-color);
+    color: var(--primary-color);
     transform: translateY(-3px);
   }
 `;
@@ -182,7 +195,7 @@ const ProfileContent = styled.div`
   height: 90%;
   border-radius: 50%;
   overflow: hidden;
-  background-color: var(--light-color);
+  background-color: var(--dark-secondary);
   
   img {
     width: 100%;
