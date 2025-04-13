@@ -6,21 +6,83 @@
 }
 
 :root {
-  /* NamasteDev inspired color scheme */
-  --primary-color: #4f46e5;       /* Indigo */
-  --primary-dark: #4338ca;        /* Darker indigo */
-  --secondary-color: #f1f5f9;     /* Light slate */
-  --accent-color: #f97316;        /* Orange */
-  --dark-color: #0f172a;          /* Slate 900 */
-  --text-color: #475569;          /* Slate 600 */
-  --light-color: #fff;            /* White */
-  --light-bg: #f8fafc;            /* Slate 50 */
-  --card-bg: #ffffff;             /* White for cards */
-  --success-color: #10b981;       /* Emerald */
-  --gradient-primary: linear-gradient(135deg, #4f46e5, #818cf8);
-  --gradient-accent: linear-gradient(135deg, #f97316, #fb923c);
-  --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  /* Theme toggle variable */
+  --theme-toggle: "dark"; /* This will be controlled by JavaScript */
+  
+  /* Dark theme color scheme */
+  --dark-primary-color: #6366f1;       /* Indigo */
+  --dark-primary-dark: #4f46e5;        /* Darker indigo */
+  --dark-secondary-color: #10b981;     /* Emerald */
+  --dark-accent-color: #f97316;        /* Orange */
+  --dark-color: #0f172a;               /* Slate 900 - main background */
+  --dark-secondary-bg: #1e293b;        /* Slate 800 - secondary background */
+  --dark-text-color: #e2e8f0;          /* Slate 200 - main text */
+  --dark-text-muted: #94a3b8;          /* Slate 400 - secondary text */
+  --dark-light-color: #f8fafc;         /* Slate 50 - for contrast text */
+  --dark-card-bg: #1e293b;             /* Slate 800 - card backgrounds */
+  --dark-success-color: #10b981;       /* Emerald */
+  --dark-gradient-primary: linear-gradient(135deg, #6366f1, #818cf8);
+  --dark-gradient-accent: linear-gradient(135deg, #f97316, #fb923c);
+  --dark-gradient-secondary: linear-gradient(135deg, #10b981, #34d399);
+  --dark-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  --dark-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  /* Light theme color scheme */
+  --light-primary-color: #4f46e5;      /* Indigo */
+  --light-primary-dark: #4338ca;       /* Darker indigo */
+  --light-secondary-color: #10b981;    /* Emerald */
+  --light-accent-color: #f97316;       /* Orange */
+  --light-color: #ffffff;              /* White - main background */
+  --light-secondary-bg: #f1f5f9;       /* Slate 100 - secondary background */
+  --light-text-color: #1e293b;         /* Slate 800 - main text */
+  --light-text-muted: #475569;         /* Slate 600 - secondary text */
+  --light-dark-color: #0f172a;         /* Slate 900 - for headings */
+  --light-card-bg: #ffffff;            /* White - card backgrounds */
+  --light-success-color: #10b981;      /* Emerald */
+  --light-gradient-primary: linear-gradient(135deg, #4f46e5, #818cf8);
+  --light-gradient-accent: linear-gradient(135deg, #f97316, #fb923c);
+  --light-gradient-secondary: linear-gradient(135deg, #10b981, #34d399);
+  --light-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  --light-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  /* Default to dark theme variables */
+  --primary-color: var(--dark-primary-color);
+  --primary-dark: var(--dark-primary-dark);
+  --secondary-color: var(--dark-secondary-color);
+  --accent-color: var(--dark-accent-color);
+  --dark-color: var(--dark-color);
+  --dark-secondary: var(--dark-secondary-bg);
+  --text-color: var(--dark-text-color);
+  --text-muted: var(--dark-text-muted);
+  --light-color: var(--dark-light-color);
+  --card-bg: var(--dark-card-bg);
+  --success-color: var(--dark-success-color);
+  --gradient-primary: var(--dark-gradient-primary);
+  --gradient-accent: var(--dark-gradient-accent);
+  --gradient-secondary: var(--dark-gradient-secondary);
+  --box-shadow: var(--dark-box-shadow);
+  --card-shadow: var(--dark-card-shadow);
   --transition: all 0.3s ease-in-out;
+}
+
+/* Light theme class that will be toggled with JavaScript */
+.light-theme {
+  --primary-color: var(--light-primary-color);
+  --primary-dark: var(--light-primary-dark);
+  --secondary-color: var(--light-secondary-color);
+  --accent-color: var(--light-accent-color);
+  --dark-color: var(--light-dark-color);
+  --dark-secondary: var(--light-secondary-bg);
+  --text-color: var(--light-text-color);
+  --text-muted: var(--light-text-muted);
+  --light-color: var(--light-color);
+  --card-bg: var(--light-card-bg);
+  --success-color: var(--light-success-color);
+  --gradient-primary: var(--light-gradient-primary);
+  --gradient-accent: var(--light-gradient-accent);
+  --gradient-secondary: var(--light-gradient-secondary);
+  --box-shadow: var(--light-box-shadow);
+  --card-shadow: var(--light-card-shadow);
 }
 
 html {
@@ -32,8 +94,14 @@ body {
   font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--dark-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.light-theme body {
   background-color: var(--light-color);
-  color: var(--dark-color);
+  color: var(--text-color);
 }
 
 a {
@@ -50,6 +118,17 @@ button {
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
   font-weight: 600;
+  color: var(--light-color);
+  transition: color 0.3s ease;
+}
+
+.light-theme h1, 
+.light-theme h2, 
+.light-theme h3, 
+.light-theme h4, 
+.light-theme h5, 
+.light-theme h6 {
+  color: var(--dark-color);
 }
 
 .container {
@@ -71,4 +150,37 @@ h1, h2, h3, h4, h5, h6 {
   .container {
     padding: 0 1rem;
   }
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: var(--light-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+  z-index: 1000;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle-icon {
+  transition: transform 0.5s ease;
+}
+
+.theme-toggle:hover .theme-toggle-icon {
+  transform: rotate(360deg);
 } 

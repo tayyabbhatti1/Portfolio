@@ -8,6 +8,7 @@ import Experience from './components/Experience';
 import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import ThemeToggle from './components/ThemeToggle';
 import './App.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Testimonials />
       <Contact />
       <Footer />
+      <ThemeToggle />
     </div>
   );
 }
