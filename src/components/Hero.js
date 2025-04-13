@@ -9,7 +9,7 @@ const HeroSection = styled.section`
   display: flex;
   align-items: center;
   padding-top: 70px;
-  background-color: var(--secondary-color);
+  background: linear-gradient(135deg, var(--light-bg) 0%, rgba(58, 134, 255, 0.1) 100%);
   position: relative;
   overflow: hidden;
 `;
@@ -42,7 +42,7 @@ const HeroContent = styled.div`
 const SubHeading = styled.p`
   font-size: 1.2rem;
   font-weight: 500;
-  color: var(--primary-color);
+  color: var(--accent-color);
   margin-bottom: 1rem;
 `;
 
@@ -75,16 +75,18 @@ const ButtonGroup = styled.div`
 
 const PrimaryButton = styled.a`
   padding: 0.8rem 2rem;
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   color: var(--light-color);
   border-radius: 5px;
   font-weight: 500;
   transition: var(--transition);
   display: inline-block;
+  box-shadow: var(--box-shadow);
   
   &:hover {
-    background-color: #4a2ebe;
+    background: linear-gradient(45deg, #0056b3, var(--primary-color));
     transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
   }
 `;
 
@@ -102,6 +104,7 @@ const SecondaryButton = styled.a`
     background-color: var(--primary-color);
     color: var(--light-color);
     transform: translateY(-3px);
+    box-shadow: var(--box-shadow);
   }
 `;
 
@@ -121,7 +124,7 @@ const SocialIcon = styled.a`
   transition: var(--transition);
   
   &:hover {
-    color: var(--primary-color);
+    color: var(--accent-color);
     transform: translateY(-3px);
   }
 `;
@@ -142,11 +145,12 @@ const ProfileCircle = styled.div`
   width: 350px;
   height: 350px;
   border-radius: 50%;
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+  box-shadow: var(--box-shadow);
   
   &:before {
     content: '';

@@ -6,11 +6,20 @@
 }
 
 :root {
-  --primary-color: #5e3bee;
-  --secondary-color: #f5f3fe;
-  --dark-color: #232536;
-  --text-color: #666;
-  --light-color: #fff;
+  /* NamasteDev inspired color scheme */
+  --primary-color: #4f46e5;       /* Indigo */
+  --primary-dark: #4338ca;        /* Darker indigo */
+  --secondary-color: #f1f5f9;     /* Light slate */
+  --accent-color: #f97316;        /* Orange */
+  --dark-color: #0f172a;          /* Slate 900 */
+  --text-color: #475569;          /* Slate 600 */
+  --light-color: #fff;            /* White */
+  --light-bg: #f8fafc;            /* Slate 50 */
+  --card-bg: #ffffff;             /* White for cards */
+  --success-color: #10b981;       /* Emerald */
+  --gradient-primary: linear-gradient(135deg, #4f46e5, #818cf8);
+  --gradient-accent: linear-gradient(135deg, #f97316, #fb923c);
+  --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   --transition: all 0.3s ease-in-out;
 }
 

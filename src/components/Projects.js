@@ -6,7 +6,7 @@ import { FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight } from 'reac
 
 const ProjectsSection = styled.section`
   padding: 6rem 0;
-  background-color: var(--light-color);
+  background: linear-gradient(to bottom, var(--light-bg), rgba(58, 134, 255, 0.05));
 `;
 
 const ProjectsContainer = styled.div`
@@ -56,18 +56,23 @@ const FilterButtons = styled.div`
 `;
 
 const FilterButton = styled.button`
-  padding: 0.6rem 1.5rem;
-  background-color: ${props => props.active ? 'var(--primary-color)' : 'transparent'};
-  color: ${props => props.active ? 'var(--light-color)' : 'var(--dark-color)'};
-  border-radius: 5px;
+  padding: 0.7rem 1.5rem;
+  margin: 0 0.5rem;
+  border-radius: 30px;
+  background: ${props => props.active ? 'var(--gradient-primary)' : 'transparent'};
+  color: ${props => props.active ? 'var(--light-color)' : 'var(--text-color)'};
   font-weight: 500;
-  border: 2px solid ${props => props.active ? 'var(--primary-color)' : 'var(--text-color)'};
+  border: ${props => props.active ? 'none' : '1px solid var(--text-color)'};
   transition: var(--transition);
   
   &:hover {
-    background-color: var(--primary-color);
-    color: var(--light-color);
-    border-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: ${props => props.active ? 'var(--box-shadow)' : 'none'};
+    background: ${props => props.active ? 'var(--gradient-primary)' : 'rgba(58, 134, 255, 0.1)'};
+  }
+  
+  @media screen and (max-width: 768px) {
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -89,14 +94,15 @@ const ProjectCard = styled(motion.div)`
   background-color: var(--light-color);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: var(--transition);
   min-width: 350px;
-  max-width: 350px;
+  flex: 0 0 350px;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   
   &:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -136,9 +142,22 @@ const ProjectContent = styled.div`
 `;
 
 const ProjectTitle = styled.h3`
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--dark-color);
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  position: relative;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+  }
 `;
 
 const ProjectDescription = styled.p`
@@ -169,16 +188,19 @@ const ProjectTags = styled.div`
 `;
 
 const ProjectTag = styled.span`
+  display: inline-block;
+  background: ${Math.random() > 0.5 ? 'rgba(58, 134, 255, 0.1)' : 'rgba(255, 190, 11, 0.1)'};
+  color: ${Math.random() > 0.5 ? 'var(--primary-color)' : 'var(--secondary-color)'};
   padding: 0.3rem 0.8rem;
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-  border-radius: 50px;
+  border-radius: 20px;
   font-size: 0.8rem;
-  font-weight: 500;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 const ProjectLinks = styled.div`
   display: flex;
+  margin-top: 1.5rem;
   gap: 1rem;
 `;
 
@@ -186,13 +208,17 @@ const ProjectLink = styled.a`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: ${props => props.href.includes('github') ? 'var(--gradient-primary)' : 'var(--gradient-accent)'};
+  color: var(--light-color);
+  border-radius: 5px;
   font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--dark-color);
   transition: var(--transition);
+  box-shadow: var(--box-shadow);
   
   &:hover {
-    color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -204,21 +230,20 @@ const ScrollControls = styled.div`
 `;
 
 const ScrollButton = styled.button`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-color: var(--light-color);
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
+  background: var(--gradient-primary);
+  color: var(--light-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  box-shadow: var(--box-shadow);
   transition: var(--transition);
   
   &:hover {
-    background-color: var(--primary-color);
-    color: var(--light-color);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 `;
 

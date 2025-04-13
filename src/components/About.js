@@ -6,20 +6,7 @@ import { FaTwitter, FaLinkedin, FaGithub, FaInstagram } from 'react-icons/fa';
 
 const AboutSection = styled.section`
   padding: 6rem 0;
-  background-color: var(--secondary-color);
-  position: relative;
-  overflow: hidden;
-  
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background-color: rgba(94, 59, 238, 0.04);
-    z-index: 0;
-  }
+  background: linear-gradient(to bottom, var(--light-color), var(--light-bg));
 `;
 
 const AboutContainer = styled.div`
@@ -191,6 +178,83 @@ const SkillItem = styled.div`
 const Skill = styled.span`
   font-size: 1rem;
   color: var(--text-color);
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-primary);
+  }
+  
+  @media screen and (max-width: 768px) {
+    text-align: center;
+    
+    &:after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+`;
+
+const InfoItem = styled.div`
+  display: flex;
+  margin-bottom: 1.5rem;
+`;
+
+const InfoLabel = styled.span`
+  min-width: 130px;
+  font-weight: 600;
+  color: var(--dark-color);
+  position: relative;
+  
+  &:after {
+    content: ':';
+    position: absolute;
+    right: 10px;
+  }
+`;
+
+const InfoText = styled.span`
+  color: var(--text-color);
+  
+  a {
+    color: var(--primary-color);
+    transition: var(--transition);
+    font-weight: 500;
+    
+    &:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+  }
+`;
+
+const ResumeButton = styled.a`
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.8rem 2.5rem;
+  background: var(--gradient-primary);
+  color: var(--light-color);
+  border-radius: 5px;
+  font-weight: 500;
+  transition: var(--transition);
+  box-shadow: var(--box-shadow);
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 const About = () => {
