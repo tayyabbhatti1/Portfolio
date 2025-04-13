@@ -6,8 +6,7 @@ import { FaQuoteLeft, FaArrowLeft, FaArrowRight, FaLinkedin } from 'react-icons/
 
 const TestimonialsSection = styled.section`
   padding: 6rem 0;
-  background-color: var(--light-color);
-  overflow: hidden;
+  background: linear-gradient(to top, var(--dark-secondary), var(--dark-color));
 `;
 
 const TestimonialsContainer = styled.div`
@@ -28,6 +27,7 @@ const SectionTitle = styled.h2`
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
+  color: var(--light-color);
   
   &:after {
     content: '';
@@ -37,13 +37,13 @@ const SectionTitle = styled.h2`
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
   }
 `;
 
 const SectionDesc = styled.p`
   font-size: 1.1rem;
-  color: var(--text-color);
+  color: var(--text-muted);
   max-width: 700px;
   margin: 0 auto;
 `;
@@ -65,13 +65,20 @@ const TestimonialSlide = styled(motion.div)`
   padding: 2rem;
 `;
 
-const TestimonialCard = styled.div`
-  background-color: white;
+const TestimonialCard = styled(motion.div)`
+  background-color: var(--card-bg);
   border-radius: 10px;
-  padding: 3rem;
-  position: relative;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  box-shadow: var(--card-shadow);
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+  }
 `;
 
 const LinkedInBadge = styled.div`
@@ -85,43 +92,38 @@ const LinkedInBadge = styled.div`
 `;
 
 const QuoteIcon = styled.div`
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: var(--primary-color);
-  opacity: 0.2;
+  opacity: 0.5;
+  margin-bottom: 1rem;
 `;
 
-const TestimonialText = styled.p`
-  font-size: 1.1rem;
-  line-height: 1.8;
-  font-style: italic;
-  color: var(--text-color);
-  margin-bottom: 2rem;
-  padding: 0 1rem;
+const TestimonialContent = styled.p`
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
 `;
 
 const TestimonialAuthor = styled.div`
   display: flex;
   align-items: center;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  padding-top: 1.5rem;
+  gap: 1rem;
+  margin-top: auto;
 `;
 
 const AuthorImage = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   overflow: hidden;
-  margin-right: 1rem;
-  background-color: var(--primary-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--light-color);
-  font-size: 1.5rem;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const AuthorInfo = styled.div``;
@@ -129,12 +131,13 @@ const AuthorInfo = styled.div``;
 const AuthorName = styled.h4`
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.3rem;
+  color: var(--light-color);
+  margin-bottom: 0.2rem;
 `;
 
-const AuthorTitle = styled.p`
+const AuthorRole = styled.p`
   font-size: 0.9rem;
-  color: var(--text-color);
+  color: var(--primary-color);
 `;
 
 const SliderControls = styled.div`
@@ -144,32 +147,29 @@ const SliderControls = styled.div`
   gap: 1rem;
 `;
 
-const SliderButton = styled.button`
+const NavButton = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: var(--light-color);
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
+  background: var(--gradient-primary);
+  color: var(--light-color);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.5rem;
   cursor: pointer;
   transition: var(--transition);
+  box-shadow: var(--box-shadow);
   
-  &:hover, &:focus {
-    background-color: var(--primary-color);
-    color: var(--light-color);
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
   
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    
-    &:hover {
-      background-color: var(--light-color);
-      color: var(--primary-color);
-    }
+    transform: none;
   }
 `;
 
@@ -240,16 +240,16 @@ const Testimonials = () => {
                   <LinkedInBadge>
                     <FaLinkedin />
                   </LinkedInBadge>
-                  <TestimonialText>
+                  <TestimonialContent>
                     "{testimonial.text}"
-                  </TestimonialText>
+                  </TestimonialContent>
                   <TestimonialAuthor>
                     <AuthorImage>
                       {testimonial.initials}
                     </AuthorImage>
                     <AuthorInfo>
                       <AuthorName>{testimonial.author}</AuthorName>
-                      <AuthorTitle>{testimonial.title}</AuthorTitle>
+                      <AuthorRole>{testimonial.title}</AuthorRole>
                     </AuthorInfo>
                   </TestimonialAuthor>
                 </TestimonialCard>
@@ -258,12 +258,12 @@ const Testimonials = () => {
           </TestimonialsSlider>
           
           <SliderControls>
-            <SliderButton onClick={handlePrev} aria-label="Previous testimonial">
+            <NavButton onClick={handlePrev} aria-label="Previous testimonial">
               <FaArrowLeft />
-            </SliderButton>
-            <SliderButton onClick={handleNext} aria-label="Next testimonial">
+            </NavButton>
+            <NavButton onClick={handleNext} aria-label="Next testimonial">
               <FaArrowRight />
-            </SliderButton>
+            </NavButton>
           </SliderControls>
         </TestimonialsWrapper>
       </TestimonialsContainer>

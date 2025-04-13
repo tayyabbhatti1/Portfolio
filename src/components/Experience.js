@@ -6,7 +6,7 @@ import { FaBriefcase, FaCalendarAlt } from 'react-icons/fa';
 
 const ExperienceSection = styled.section`
   padding: 6rem 0;
-  background-color: var(--light-color);
+  background: linear-gradient(to bottom, var(--dark-secondary), var(--dark-color));
 `;
 
 const ExperienceContainer = styled.div`
@@ -27,6 +27,7 @@ const SectionTitle = styled.h2`
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
+  color: var(--light-color);
   
   &:after {
     content: '';
@@ -36,13 +37,13 @@ const SectionTitle = styled.h2`
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
   }
 `;
 
 const SectionDesc = styled.p`
   font-size: 1.1rem;
-  color: var(--text-color);
+  color: var(--text-muted);
   max-width: 700px;
   margin: 0 auto;
 `;
@@ -60,7 +61,7 @@ const Timeline = styled.div`
     transform: translateX(-50%);
     width: 2px;
     height: 100%;
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
     
     @media screen and (max-width: 768px) {
       left: 30px;
@@ -136,9 +137,9 @@ const TimelineItem = styled(motion.div)`
 `;
 
 const TimelineContent = styled.div`
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--card-shadow);
   padding: 2rem;
   position: relative;
   display: flex;
@@ -160,7 +161,7 @@ const TimelineContent = styled.div`
     height: 0;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-left: 12px solid white;
+    border-left: 12px solid var(--card-bg);
     right: -12px;
     top: 15px;
     
@@ -184,7 +185,7 @@ const JobTitle = styled.h3`
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: var(--dark-color);
+  color: var(--light-color);
 `;
 
 const CompanyName = styled.h4`
@@ -199,7 +200,7 @@ const JobPeriod = styled.div`
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  color: var(--text-color);
+  color: var(--text-muted);
   
   svg {
     color: var(--primary-color);
@@ -217,7 +218,7 @@ const JobDescription = styled.ul`
     margin-bottom: 0.8rem;
     font-size: 1rem;
     line-height: 1.6;
-    color: var(--text-color);
+    color: var(--text-muted);
     position: relative;
     padding-left: 1.5rem;
     

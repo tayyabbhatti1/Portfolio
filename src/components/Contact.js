@@ -7,7 +7,20 @@ import emailjs from '@emailjs/browser';
 
 const ContactSection = styled.section`
   padding: 6rem 0;
-  background-color: var(--secondary-color);
+  background: linear-gradient(135deg, var(--dark-color) 0%, var(--dark-secondary) 100%);
+  position: relative;
+  overflow: hidden;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.15), transparent 50%);
+    z-index: 0;
+  }
 `;
 
 const ContactContainer = styled.div`
@@ -28,6 +41,7 @@ const SectionTitle = styled.h2`
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
+  color: var(--light-color);
   
   &:after {
     content: '';
@@ -37,90 +51,98 @@ const SectionTitle = styled.h2`
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
   }
 `;
 
 const SectionDesc = styled.p`
   font-size: 1.1rem;
-  color: var(--text-color);
+  color: var(--text-muted);
   max-width: 700px;
   margin: 0 auto;
 `;
 
-const ContactWrapper = styled.div`
+const ContactGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
   gap: 3rem;
+  margin-top: 4rem;
   
   @media screen and (max-width: 968px) {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 `;
 
-const ContactInfo = styled(motion.div)``;
+const ContactInfo = styled.div``;
 
-const ContactInfoItem = styled.div`
-  display: flex;
-  align-items: flex-start;
+const InfoTitle = styled.h3`
+  font-size: 1.8rem;
+  font-weight: 600;
   margin-bottom: 2rem;
+  color: var(--light-color);
 `;
 
-const ContactIcon = styled.div`
+const InfoItem = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+`;
+
+const InfoIcon = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   color: var(--light-color);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  margin-right: 1rem;
+  flex-shrink: 0;
 `;
 
-const ContactTextContent = styled.div``;
+const InfoContent = styled.div``;
 
-const ContactTitle = styled.h3`
-  font-size: 1.2rem;
+const InfoLabel = styled.h4`
+  font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  color: var(--light-color);
 `;
 
-const ContactText = styled.p`
+const InfoText = styled.p`
   font-size: 1rem;
-  color: var(--text-color);
+  color: var(--text-muted);
   line-height: 1.6;
-`;
-
-const ContactLink = styled.a`
-  color: var(--text-color);
-  transition: var(--transition);
   
-  &:hover {
-    color: var(--primary-color);
+  a {
+    color: var(--text-muted);
+    transition: var(--transition);
+    
+    &:hover {
+      color: var(--primary-color);
+    }
   }
 `;
 
-const ContactForm = styled(motion.form)`
-  background-color: var(--light-color);
-  padding: 3rem;
+const ContactForm = styled.form`
+  background-color: var(--card-bg);
+  padding: 2.5rem;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--card-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 `;
 
-const FormRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-  
-  @media screen and (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
+const FormTitle = styled.h3`
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: var(--light-color);
 `;
 
-const FormGroup = styled.div`
+const InputGroup = styled.div`
   margin-bottom: 1.5rem;
 `;
 
@@ -129,81 +151,88 @@ const FormLabel = styled.label`
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
+  color: var(--text-color);
 `;
 
 const FormInput = styled.input`
   width: 100%;
   padding: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 5px;
   font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--light-color);
   transition: var(--transition);
   
   &:focus {
     outline: none;
     border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  }
+  
+  &::placeholder {
+    color: var(--text-muted);
   }
 `;
 
 const FormTextarea = styled.textarea`
   width: 100%;
   padding: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 5px;
   font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--light-color);
   resize: vertical;
   min-height: 150px;
+  font-family: inherit;
   transition: var(--transition);
   
   &:focus {
     outline: none;
     border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  }
+  
+  &::placeholder {
+    color: var(--text-muted);
   }
 `;
 
 const SubmitButton = styled.button`
   padding: 1rem 2rem;
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   color: var(--light-color);
   border-radius: 5px;
   font-weight: 500;
   font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  cursor: pointer;
   transition: var(--transition);
+  display: inline-block;
+  border: none;
+  box-shadow: var(--box-shadow);
+  width: 100%;
   
   &:hover {
-    background-color: #4a2ebe;
     transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
   
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
-    
-    &:hover {
-      transform: none;
-    }
   }
 `;
 
-const SuccessMessage = styled(motion.div)`
-  background-color: #4CAF50;
-  color: white;
+const StatusMessage = styled.div`
   padding: 1rem;
   border-radius: 5px;
   margin-top: 1rem;
+  font-size: 0.9rem;
   text-align: center;
-`;
-
-const ErrorMessage = styled(motion.div)`
-  background-color: #f44336;
-  color: white;
-  padding: 1rem;
-  border-radius: 5px;
-  margin-top: 1rem;
-  text-align: center;
+  background-color: ${props => props.success ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'};
+  color: ${props => props.success ? 'var(--success-color)' : '#ef4444'};
+  border: 1px solid ${props => props.success ? 'rgba(16, 185, 129, 0.5)' : 'rgba(239, 68, 68, 0.5)'};
 `;
 
 const Contact = () => {
@@ -271,131 +300,124 @@ const Contact = () => {
           </SectionDesc>
         </SectionHeader>
         
-        <ContactWrapper>
-          <ContactInfo
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <ContactInfoItem>
-              <ContactIcon>
+        <ContactGrid>
+          <ContactInfo>
+            <InfoTitle>Location</InfoTitle>
+            <InfoItem>
+              <InfoIcon>
                 <FaMapMarkerAlt />
-              </ContactIcon>
-              <ContactTextContent>
-                <ContactTitle>Location</ContactTitle>
-                <ContactText>Lahore, Punjab, Pakistan</ContactText>
-              </ContactTextContent>
-            </ContactInfoItem>
-            
-            <ContactInfoItem>
-              <ContactIcon>
-                <FaEnvelope />
-              </ContactIcon>
-              <ContactTextContent>
-                <ContactTitle>Email</ContactTitle>
-                <ContactLink href="mailto:tayyabmuhammad743@gmail.com">tayyabmuhammad743@gmail.com</ContactLink>
-              </ContactTextContent>
-            </ContactInfoItem>
-            
-            <ContactInfoItem>
-              <ContactIcon>
-                <FaPhoneAlt />
-              </ContactIcon>
-              <ContactTextContent>
-                <ContactTitle>Phone</ContactTitle>
-                <ContactLink href="tel:+923390002105">+92 339 000 2105</ContactLink>
-              </ContactTextContent>
-            </ContactInfoItem>
+              </InfoIcon>
+              <InfoContent>
+                <InfoLabel>Location</InfoLabel>
+                <InfoText>Lahore, Punjab, Pakistan</InfoText>
+              </InfoContent>
+            </InfoItem>
           </ContactInfo>
           
-          <ContactForm
-            ref={formRef}
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            onSubmit={handleSubmit}
-          >
-            <FormRow>
-              <FormGroup>
-                <FormLabel htmlFor="name">Name</FormLabel>
-                <FormInput 
-                  type="text" 
-                  id="name" 
-                  name="name" 
-                  placeholder="Your Name" 
-                  value={formData.name}
-                  onChange={handleChange}
-                  required 
-                />
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <FormInput 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  placeholder="Your Email" 
-                  value={formData.email}
-                  onChange={handleChange}
-                  required 
-                />
-              </FormGroup>
-            </FormRow>
-            
-            <FormGroup>
-              <FormLabel htmlFor="subject">Subject</FormLabel>
-              <FormInput 
-                type="text" 
-                id="subject" 
-                name="subject" 
-                placeholder="Subject" 
-                value={formData.subject}
-                onChange={handleChange}
-                required 
-              />
-            </FormGroup>
-            
-            <FormGroup>
-              <FormLabel htmlFor="message">Message</FormLabel>
-              <FormTextarea 
-                id="message" 
-                name="message" 
-                placeholder="Your Message" 
-                value={formData.message}
-                onChange={handleChange}
-                required 
-              />
-            </FormGroup>
-            
-            <SubmitButton type="submit" disabled={isSubmitting}>
-              <FaPaperPlane />
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </SubmitButton>
-            
-            {status.success && (
-              <SuccessMessage
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {status.message}
-              </SuccessMessage>
-            )}
-            
-            {status.error && (
-              <ErrorMessage
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {status.message}
-              </ErrorMessage>
-            )}
-          </ContactForm>
-        </ContactWrapper>
+          <ContactInfo>
+            <InfoTitle>Email</InfoTitle>
+            <InfoItem>
+              <InfoIcon>
+                <FaEnvelope />
+              </InfoIcon>
+              <InfoContent>
+                <InfoLabel>Email</InfoLabel>
+                <InfoText>
+                  <a href="mailto:tayyabmuhammad743@gmail.com">tayyabmuhammad743@gmail.com</a>
+                </InfoText>
+              </InfoContent>
+            </InfoItem>
+          </ContactInfo>
+          
+          <ContactInfo>
+            <InfoTitle>Phone</InfoTitle>
+            <InfoItem>
+              <InfoIcon>
+                <FaPhoneAlt />
+              </InfoIcon>
+              <InfoContent>
+                <InfoLabel>Phone</InfoLabel>
+                <InfoText>
+                  <a href="tel:+923390002105">+92 339 000 2105</a>
+                </InfoText>
+              </InfoContent>
+            </InfoItem>
+          </ContactInfo>
+        </ContactGrid>
+        
+        <ContactForm
+          ref={formRef}
+          onSubmit={handleSubmit}
+        >
+          <FormTitle>Send Message</FormTitle>
+          <InputGroup>
+            <FormLabel htmlFor="name">Name</FormLabel>
+            <FormInput 
+              type="text" 
+              id="name" 
+              name="name" 
+              placeholder="Your Name" 
+              value={formData.name}
+              onChange={handleChange}
+              required 
+            />
+          </InputGroup>
+          
+          <InputGroup>
+            <FormLabel htmlFor="email">Email</FormLabel>
+            <FormInput 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="Your Email" 
+              value={formData.email}
+              onChange={handleChange}
+              required 
+            />
+          </InputGroup>
+          
+          <InputGroup>
+            <FormLabel htmlFor="subject">Subject</FormLabel>
+            <FormInput 
+              type="text" 
+              id="subject" 
+              name="subject" 
+              placeholder="Subject" 
+              value={formData.subject}
+              onChange={handleChange}
+              required 
+            />
+          </InputGroup>
+          
+          <InputGroup>
+            <FormLabel htmlFor="message">Message</FormLabel>
+            <FormTextarea 
+              id="message" 
+              name="message" 
+              placeholder="Your Message" 
+              value={formData.message}
+              onChange={handleChange}
+              required 
+            />
+          </InputGroup>
+          
+          <SubmitButton type="submit" disabled={isSubmitting}>
+            <FaPaperPlane />
+            {isSubmitting ? 'Sending...' : 'Send Message'}
+          </SubmitButton>
+          
+          {status.success && (
+            <StatusMessage success>
+              {status.message}
+            </StatusMessage>
+          )}
+          
+          {status.error && (
+            <StatusMessage error>
+              {status.message}
+            </StatusMessage>
+          )}
+        </ContactForm>
       </ContactContainer>
     </ContactSection>
   );

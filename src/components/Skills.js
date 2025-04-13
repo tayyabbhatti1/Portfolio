@@ -7,7 +7,7 @@ import { SiOracle, SiMysql, SiPostman } from 'react-icons/si';
 
 const SkillsSection = styled.section`
   padding: 6rem 0;
-  background-color: var(--light-color);
+  background: linear-gradient(to top, var(--dark-color), var(--dark-secondary));
   position: relative;
   overflow: hidden;
 `;
@@ -30,6 +30,7 @@ const SectionTitle = styled.h2`
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
+  color: var(--light-color);
   
   &:after {
     content: '';
@@ -39,13 +40,13 @@ const SectionTitle = styled.h2`
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
   }
 `;
 
 const SectionDesc = styled.p`
   font-size: 1.1rem;
-  color: var(--text-color);
+  color: var(--text-muted);
   max-width: 700px;
   margin: 0 auto;
 `;
@@ -57,16 +58,16 @@ const SkillsGrid = styled.div`
 `;
 
 const SkillCategory = styled(motion.div)`
-  background-color: var(--light-color);
+  background-color: var(--card-bg);
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--card-shadow);
   padding: 2rem;
   transition: transform 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -76,14 +77,14 @@ const CategoryHeader = styled.div`
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 `;
 
 const CategoryIcon = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 10px;
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   color: var(--light-color);
   display: flex;
   align-items: center;
@@ -94,7 +95,7 @@ const CategoryIcon = styled.div`
 const CategoryTitle = styled.h3`
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--dark-color);
+  color: var(--light-color);
 `;
 
 const SkillList = styled.ul`
@@ -104,7 +105,7 @@ const SkillList = styled.ul`
 const SkillItem = styled.li`
   margin-bottom: 0.8rem;
   font-size: 1rem;
-  color: var(--text-color);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   
