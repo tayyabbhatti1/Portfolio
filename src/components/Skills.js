@@ -6,10 +6,32 @@ import { FaDatabase, FaLaptopCode, FaTools, FaCogs, FaServer, FaCode } from 'rea
 import { SiOracle, SiMysql, SiPostman } from 'react-icons/si';
 
 const SkillsSection = styled.section`
-  padding: 6rem 0;
-  background: linear-gradient(to top, var(--dark-color), var(--dark-secondary));
+  padding: 8rem 0;
+  background: linear-gradient(135deg, var(--dark-color) 0%, var(--dark-secondary) 100%);
   position: relative;
   overflow: hidden;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -5%;
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent 70%);
+    z-index: 0;
+  }
+  
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    left: -5%;
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.08), transparent 70%);
+    z-index: 0;
+  }
 `;
 
 const SkillsContainer = styled.div`
@@ -17,57 +39,82 @@ const SkillsContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  position: relative;
+  z-index: 1;
 `;
 
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   position: relative;
   display: inline-block;
   color: var(--light-color);
+  text-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
   
   &:after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
+    width: 80px;
+    height: 4px;
     background: var(--gradient-primary);
+    border-radius: 2px;
   }
 `;
 
 const SectionDesc = styled.p`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--text-muted);
   max-width: 700px;
   margin: 0 auto;
+  line-height: 1.8;
+  margin-top: 1.5rem;
 `;
 
 const SkillsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 `;
 
 const SkillCategory = styled(motion.div)`
-  background-color: var(--card-bg);
-  border-radius: 10px;
-  box-shadow: var(--card-shadow);
-  padding: 2rem;
-  transition: transform 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(var(--blur-amount));
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  padding: 2.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 80%);
+    z-index: 0;
+  }
   
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -77,7 +124,8 @@ const CategoryHeader = styled.div`
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
 `;
 
 const CategoryIcon = styled.div`
@@ -90,30 +138,47 @@ const CategoryIcon = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const CategoryTitle = styled.h3`
   font-size: 1.3rem;
   font-weight: 600;
   color: var(--light-color);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 `;
 
 const SkillList = styled.ul`
   list-style-type: none;
+  position: relative;
+  z-index: 1;
 `;
 
 const SkillItem = styled.li`
-  margin-bottom: 0.8rem;
+  margin-bottom: 1 rem;
   font-size: 1rem;
   color: var(--text-muted);
   display: flex;
   align-items: center;
+  padding: 0.5rem 0;
+  transition: transform 0.3s ease, color 0.3s ease;
   
   &:before {
     content: '•';
     color: var(--primary-color);
     font-weight: bold;
-    margin-right: 10px;
+    margin-right: 12px;
+    font-size: 1.3rem;
+  }
+  
+  &:hover {
+    transform: translateX(5px);
+    color: var(--text-color);
+  }
+  
+  &:last-child {
+    margin-bottom: 0;
   }
 `;
 
@@ -130,10 +195,10 @@ const Skills = () => {
         
         <SkillsGrid>
           <SkillCategory
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
           >
             <CategoryHeader>
               <CategoryIcon>
@@ -152,10 +217,10 @@ const Skills = () => {
           </SkillCategory>
           
           <SkillCategory
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
+            viewport={{ once: true, margin: "-100px" }}
           >
             <CategoryHeader>
               <CategoryIcon>
@@ -173,10 +238,10 @@ const Skills = () => {
           </SkillCategory>
           
           <SkillCategory
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+            viewport={{ once: true, margin: "-100px" }}
           >
             <CategoryHeader>
               <CategoryIcon>
@@ -194,10 +259,10 @@ const Skills = () => {
           </SkillCategory>
           
           <SkillCategory
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
+            viewport={{ once: true, margin: "-100px" }}
           >
             <CategoryHeader>
               <CategoryIcon>
@@ -215,10 +280,10 @@ const Skills = () => {
           </SkillCategory>
           
           <SkillCategory
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+            viewport={{ once: true, margin: "-100px" }}
           >
             <CategoryHeader>
               <CategoryIcon>
@@ -236,10 +301,10 @@ const Skills = () => {
           </SkillCategory>
           
           <SkillCategory
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.5 }}
+            viewport={{ once: true, margin: "-100px" }}
           >
             <CategoryHeader>
               <CategoryIcon>

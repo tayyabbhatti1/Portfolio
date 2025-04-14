@@ -5,8 +5,32 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const ProjectsSection = styled.section`
-  padding: 6rem 0;
-  background: linear-gradient(to bottom, var(--light-bg), rgba(58, 134, 255, 0.05));
+  padding: 8rem 0;
+  background: linear-gradient(135deg, var(--dark-color) 0%, var(--dark-secondary) 100%);
+  position: relative;
+  overflow: hidden;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: -15%;
+    left: -5%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.07), transparent 70%);
+    z-index: 0;
+  }
+  
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    right: -5%;
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent 70%);
+    z-index: 0;
+  }
 `;
 
 const ProjectsContainer = styled.div`
@@ -14,65 +38,93 @@ const ProjectsContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  position: relative;
+  z-index: 1;
 `;
 
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   position: relative;
   display: inline-block;
+  color: var(--light-color);
+  text-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
   
   &:after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background-color: var(--primary-color);
+    width: 80px;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
   }
 `;
 
 const SectionDesc = styled.p`
-  font-size: 1.1rem;
-  color: var(--text-color);
+  font-size: 1.2rem;
+  color: var(--text-muted);
   max-width: 700px;
   margin: 0 auto;
+  line-height: 1.8;
+  margin-top: 1.5rem;
 `;
 
 const FilterButtons = styled.div`
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
+  gap: 1.2rem;
+  margin-bottom: 4rem;
   flex-wrap: wrap;
 `;
 
 const FilterButton = styled.button`
-  padding: 0.7rem 1.5rem;
-  margin: 0 0.5rem;
-  border-radius: 30px;
-  background: ${props => props.active ? 'var(--gradient-primary)' : 'transparent'};
-  color: ${props => props.active ? 'var(--light-color)' : 'var(--text-color)'};
+  padding: 0.8rem 1.8rem;
+  border-radius: 8px;
+  background: ${props => props.active ? 'var(--gradient-primary)' : 'rgba(30, 41, 59, 0.6)'};
+  color: ${props => props.active ? 'var(--light-color)' : 'var(--text-muted)'};
   font-weight: 500;
-  border: ${props => props.active ? 'none' : '1px solid var(--text-color)'};
-  transition: var(--transition);
+  border: ${props => props.active ? 'none' : '1px solid rgba(255, 255, 255, 0.1)'};
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  box-shadow: ${props => props.active ? '0 10px 25px rgba(99, 102, 241, 0.3)' : 'none'};
+  backdrop-filter: blur(var(--blur-amount));
+  position: relative;
+  overflow: hidden;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: -1;
+  }
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: ${props => props.active ? 'var(--box-shadow)' : 'none'};
-    background: ${props => props.active ? 'var(--gradient-primary)' : 'rgba(58, 134, 255, 0.1)'};
+    transform: translateY(-5px);
+    box-shadow: ${props => props.active ? 
+      '0 15px 30px rgba(99, 102, 241, 0.4)' : 
+      '0 10px 20px rgba(30, 41, 59, 0.4)'};
+    
+    &:before {
+      left: 100%;
+    }
   }
   
   @media screen and (max-width: 768px) {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+    padding: 0.7rem 1.5rem;
   }
 `;
 
@@ -80,8 +132,8 @@ const ProjectsRow = styled.div`
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 1rem 0;
-  gap: 2rem;
+  padding: 2rem 0.5rem;
+  gap: 2.5rem;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
   
@@ -91,18 +143,20 @@ const ProjectsRow = styled.div`
 `;
 
 const ProjectCard = styled(motion.div)`
-  background-color: var(--light-color);
-  border-radius: 10px;
+  background-color: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(var(--blur-amount));
+  border-radius: 16px;
   overflow: hidden;
   min-width: 350px;
   flex: 0 0 350px;
-  box-shadow: var(--box-shadow);
-  transition: var(--transition);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
   
   &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -110,27 +164,50 @@ const ProjectImage = styled.div`
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background-color: var(--secondary-color);
+  background-color: rgba(15, 23, 42, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(15, 23, 42, 0.8) 100%
+    );
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
   
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.6s ease;
   }
   
   ${ProjectCard}:hover img {
-    transform: scale(1.05);
+    transform: scale(1.08);
+  }
+  
+  ${ProjectCard}:hover &:before {
+    opacity: 0.4;
   }
 `;
 
 const ProjectImageText = styled.span`
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
   color: var(--primary-color);
+  z-index: 2;
   
   ${ProjectCard}:hover & {
     color: var(--light-color);
@@ -138,20 +215,20 @@ const ProjectImageText = styled.span`
 `;
 
 const ProjectContent = styled.div`
-  padding: 1.5rem;
+  padding: 2rem;
 `;
 
 const ProjectTitle = styled.h3`
   font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--dark-color);
+  margin-bottom: 1.2rem;
+  color: var(--light-color);
   font-weight: 600;
   position: relative;
   
   &:after {
     content: '';
     position: absolute;
-    bottom: -8px;
+    bottom: -10px;
     left: 0;
     width: 50px;
     height: 3px;
@@ -162,8 +239,9 @@ const ProjectTitle = styled.h3`
 
 const ProjectDescription = styled.p`
   font-size: 1rem;
-  color: var(--text-color);
-  margin-bottom: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
 `;
 
 const ProjectTags = styled.div`
@@ -171,7 +249,7 @@ const ProjectTags = styled.div`
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  max-height: 100px;
+  max-height: 120px;
   overflow-y: auto;
   padding-right: 5px;
   
@@ -189,61 +267,112 @@ const ProjectTags = styled.div`
 
 const ProjectTag = styled.span`
   display: inline-block;
-  background: ${Math.random() > 0.5 ? 'rgba(58, 134, 255, 0.1)' : 'rgba(255, 190, 11, 0.1)'};
-  color: ${Math.random() > 0.5 ? 'var(--primary-color)' : 'var(--secondary-color)'};
-  padding: 0.3rem 0.8rem;
+  background: ${() => {
+    const options = [
+      'rgba(99, 102, 241, 0.15)',
+      'rgba(16, 185, 129, 0.15)',
+      'rgba(249, 115, 22, 0.15)'
+    ];
+    return options[Math.floor(Math.random() * options.length)];
+  }};
+  color: ${() => {
+    const options = [
+      'var(--primary-color)',
+      'var(--secondary-color)',
+      'var(--accent-color)'
+    ];
+    return options[Math.floor(Math.random() * options.length)];
+  }};
+  padding: 0.4rem 0.9rem;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   margin-right: 0.5rem;
   margin-bottom: 0.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
 `;
 
 const ProjectLinks = styled.div`
   display: flex;
-  margin-top: 1.5rem;
-  gap: 1rem;
+  margin-top: 2rem;
+  gap: 1.2rem;
 `;
 
 const ProjectLink = styled.a`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   background: ${props => props.href.includes('github') ? 'var(--gradient-primary)' : 'var(--gradient-accent)'};
   color: var(--light-color);
-  border-radius: 5px;
-  font-size: 0.9rem;
-  transition: var(--transition);
-  box-shadow: var(--box-shadow);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: 0;
+  }
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+    
+    &:before {
+      left: 100%;
+    }
+  }
+  
+  span, svg {
+    position: relative;
+    z-index: 1;
   }
 `;
 
 const ScrollControls = styled.div`
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 1.5rem;
+  margin-top: 3rem;
 `;
 
 const ScrollButton = styled.button`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: var(--gradient-primary);
   color: var(--light-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--box-shadow);
-  transition: var(--transition);
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1.2rem;
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+  }
+  
+  &:active {
+    transform: translateY(-2px) scale(0.95);
   }
 `;
 
@@ -328,12 +457,12 @@ const Projects = () => {
   
   const getProjectImage = (project) => {
     if (project.title.includes('Allied Bank')) {
-      return <img src="/Allied_Bank.png" alt={project.title} />;
+      return <img src="/Allied_Bank.png" alt={project.title} style={{ maxWidth: '90%', maxHeight: '90%' }} />;
     } else if (project.title.includes('Community Development Authority')) {
       return <img src="/CDA_Dubai.png" alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
-    }else if (project.title.includes('Riyad Bank')) {
+    } else if (project.title.includes('Riyad Bank')) {
       return <img src="/Riyad_Bank.jpg" alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
-    }else if (project.title.includes('STC-PRM Portal')) {
+    } else if (project.title.includes('STC-PRM Portal')) {
       return <img src="/STC.png" alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
     } else {
       return <ProjectImageText>{project.title.substring(0, 2)}</ProjectImageText>;
@@ -375,10 +504,10 @@ const Projects = () => {
           {filteredProjects.map((project, index) => (
             <ProjectCard
               key={project.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-100px" }}
             >
               <ProjectImage>
                 {getProjectImage(project)}

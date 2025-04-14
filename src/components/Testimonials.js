@@ -5,8 +5,32 @@ import { motion } from 'framer-motion';
 import { FaQuoteLeft, FaArrowLeft, FaArrowRight, FaLinkedin } from 'react-icons/fa';
 
 const TestimonialsSection = styled.section`
-  padding: 6rem 0;
-  background: linear-gradient(to top, var(--dark-secondary), var(--dark-color));
+  padding: 8rem 0;
+  background: linear-gradient(135deg, var(--dark-color) 0%, var(--dark-secondary) 100%);
+  position: relative;
+  overflow: hidden;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: -5%;
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent 70%);
+    z-index: 0;
+  }
+  
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 5%;
+    right: -10%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.08), transparent 70%);
+    z-index: 0;
+  }
 `;
 
 const TestimonialsContainer = styled.div`
@@ -14,38 +38,44 @@ const TestimonialsContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  position: relative;
+  z-index: 1;
 `;
 
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   position: relative;
   display: inline-block;
   color: var(--light-color);
+  text-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
   
   &:after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
+    width: 80px;
+    height: 4px;
     background: var(--gradient-primary);
+    border-radius: 2px;
   }
 `;
 
 const SectionDesc = styled.p`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--text-muted);
   max-width: 700px;
   margin: 0 auto;
+  line-height: 1.8;
+  margin-top: 1.5rem;
 `;
 
 const TestimonialsWrapper = styled.div`
@@ -57,6 +87,7 @@ const TestimonialsWrapper = styled.div`
 const TestimonialsSlider = styled.div`
   display: flex;
   overflow: hidden;
+  min-height: 350px;
 `;
 
 const TestimonialSlide = styled(motion.div)`
@@ -66,58 +97,96 @@ const TestimonialSlide = styled(motion.div)`
 `;
 
 const TestimonialCard = styled(motion.div)`
-  background-color: var(--card-bg);
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: var(--card-shadow);
-  min-height: 300px;
+  background-color: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(var(--blur-amount));
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  min-height: 320px;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 80%);
+    z-index: 0;
+  }
   
   &:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
   }
 `;
 
 const LinkedInBadge = styled.div`
   position: absolute;
-  top: 2rem;
-  right: 2rem;
+  top: 2.5rem;
+  right: 2.5rem;
   font-size: 1.8rem;
   color: #0077b5;
   display: flex;
   align-items: center;
+  z-index: 2;
+  filter: drop-shadow(0 0 8px rgba(0, 119, 181, 0.4));
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 const QuoteIcon = styled.div`
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: var(--primary-color);
-  opacity: 0.5;
-  margin-bottom: 1rem;
+  opacity: 0.6;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
 `;
 
 const TestimonialContent = styled.p`
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 1.1rem;
+  line-height: 1.8;
   color: var(--text-muted);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   flex-grow: 1;
+  position: relative;
+  z-index: 1;
+  font-style: italic;
 `;
 
 const TestimonialAuthor = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.2rem;
   margin-top: auto;
+  position: relative;
+  z-index: 1;
 `;
 
 const AuthorImage = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   overflow: hidden;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--light-color);
+  font-weight: 600;
+  font-size: 1.2rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   
   img {
     width: 100%;
@@ -129,41 +198,70 @@ const AuthorImage = styled.div`
 const AuthorInfo = styled.div``;
 
 const AuthorName = styled.h4`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--light-color);
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 `;
 
 const AuthorRole = styled.p`
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--primary-color);
 `;
 
 const SliderControls = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 3rem;
-  gap: 1rem;
+  margin-top: 4rem;
+  gap: 1.5rem;
 `;
 
 const NavButton = styled.button`
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   background: var(--gradient-primary);
   color: var(--light-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  transition: var(--transition);
-  box-shadow: var(--box-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: 0;
+  }
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+    
+    &:before {
+      left: 100%;
+    }
+  }
+  
+  &:active {
+    transform: translateY(-2px) scale(0.95);
+  }
+  
+  svg {
+    position: relative;
+    z-index: 1;
   }
   
   &:disabled {
@@ -228,12 +326,15 @@ const Testimonials = () => {
                   opacity: currentIndex === index ? 1 : 0,
                   x: currentIndex === index ? 0 : 100
                 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
                 style={{ 
                   display: currentIndex === index ? 'block' : 'none'
                 }}
               >
-                <TestimonialCard>
+                <TestimonialCard
+                  whileHover={{ y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <QuoteIcon>
                     <FaQuoteLeft />
                   </QuoteIcon>
