@@ -122,7 +122,7 @@ const ThemeToggle = () => {
     >
       <GlowEffect />
       <IconWrapper>
-        {isDarkTheme ? <FaSun /> : <FaMoon />}
+       {isDarkTheme ? <FaSun /> : <FaMoon />}
       </IconWrapper>
     </ToggleButton>
   );

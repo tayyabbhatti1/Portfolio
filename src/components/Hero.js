@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from '@emotion/styled/macro';
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaCode, FaDatabase, FaChartBar, FaServer, FaLaptopCode } from 'react-icons/fa';
 
 const HeroSection = styled.section`
   min-height: 100vh;
@@ -326,9 +326,179 @@ const ProfileContent = styled.div`
   }
 `;
 
+const FloatingIcon = styled(motion.div)`
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: ${props => props.bg || 'var(--gradient-primary)'};
+  color: var(--light-color);
+  border-radius: ${props => props.rounded ? '50%' : '12px'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  svg {
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+  }
+`;
+
+const DataLine = styled(motion.div)`
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), transparent);
+  transform-origin: left;
+  z-index: 0;
+`;
+
+const CodeBlock = styled(motion.div)`
+  position: absolute;
+  width: 80px;
+  height: 34px;
+  background: rgba(30, 41, 59, 0.9);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: 'Consolas', monospace;
+  font-size: 12px;
+  color: #10b981;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(72, 187, 120, 0.3);
+  z-index: 1;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      transparent 45%,
+      rgba(16, 185, 129, 0.05) 45%,
+      rgba(16, 185, 129, 0.05) 55%,
+      transparent 55%,
+      transparent
+    );
+    animation: scanLine 3s linear infinite;
+  }
+  
+  @keyframes scanLine {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+`;
+
+const AnimatedBackground = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+`;
+
+const BinaryText = styled(motion.div)`
+  position: absolute;
+  font-family: 'Consolas', monospace;
+  font-size: ${props => props.size || '12px'};
+  color: rgba(99, 102, 241, 0.15);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+`;
+
 const Hero = () => {
+  // Binary text to display in the background
+  const binaryString1 = "10101011010101101010110101011010101101";
+  const binaryString2 = "01101001011010010110100101101001011010";
+  
+  // Animation variants for elements
+  const floatingIconVariants = {
+    hover: {
+      y: -10,
+      scale: 1.1,
+      transition: {
+        duration: 0.3
+      }
+    }
+  };
+  
+  const dataLineVariants = {
+    initial: { 
+      scaleX: 0,
+      opacity: 0
+    },
+    animate: {
+      scaleX: 1,
+      opacity: 1,
+      transition: {
+        duration: 1.5,
+        delay: 0.5
+      }
+    }
+  };
+  
+  const codeBlockVariants = {
+    initial: {
+      opacity: 0,
+      scale: 0.8
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        delay: 1
+      }
+    }
+  };
+  
   return (
     <HeroSection id="home">
+      <AnimatedBackground>
+        <BinaryText
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          style={{ top: '15%', left: '5%' }}
+          size="14px"
+        >
+          {binaryString1}
+        </BinaryText>
+        <BinaryText
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          style={{ top: '35%', right: '8%' }}
+          size="14px"
+        >
+          {binaryString2}
+        </BinaryText>
+        <BinaryText
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          style={{ bottom: '20%', left: '10%' }}
+          size="14px"
+        >
+          {binaryString1}
+        </BinaryText>
+      </AnimatedBackground>
+      
       <HeroContainer>
         <HeroContent>
           <motion.div
@@ -367,6 +537,131 @@ const Hero = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
+          {/* Code icon animation */}
+          <FloatingIcon 
+            bg="linear-gradient(135deg, #6366f1, #4f46e5)"
+            rounded={false}
+            style={{ top: '-10%', right: '30%' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+            whileHover="hover"
+            variants={floatingIconVariants}
+          >
+            <FaCode />
+          </FloatingIcon>
+          
+          {/* Database icon animation */}
+          <FloatingIcon 
+            bg="linear-gradient(135deg, #10b981, #059669)"
+            rounded={true}
+            style={{ top: '20%', right: '-5%' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1 }}
+            whileHover="hover"
+            variants={floatingIconVariants}
+          >
+            <FaDatabase />
+          </FloatingIcon>
+          
+          {/* Chart icon animation */}
+          <FloatingIcon 
+            bg="linear-gradient(135deg, #f59e0b, #d97706)"
+            rounded={false}
+            style={{ bottom: '10%', right: '10%' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.3 }}
+            whileHover="hover"
+            variants={floatingIconVariants}
+          >
+            <FaChartBar />
+          </FloatingIcon>
+          
+          {/* Server icon animation */}
+          <FloatingIcon 
+            bg="linear-gradient(135deg, #ef4444, #dc2626)"
+            rounded={true}
+            style={{ bottom: '30%', left: '-5%' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.6 }}
+            whileHover="hover"
+            variants={floatingIconVariants}
+          >
+            <FaServer />
+          </FloatingIcon>
+          
+          {/* Laptop Code icon animation */}
+          <FloatingIcon 
+            bg="linear-gradient(135deg, #8b5cf6, #7c3aed)"
+            rounded={false}
+            style={{ top: '25%', left: '5%' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.9 }}
+            whileHover="hover"
+            variants={floatingIconVariants}
+          >
+            <FaLaptopCode />
+          </FloatingIcon>
+          
+          {/* Data line animations */}
+          <DataLine 
+            style={{ top: '0%', right: '28%', width: '80px', transform: 'rotate(45deg)' }}
+            initial="initial"
+            animate="animate"
+            variants={dataLineVariants}
+          />
+          
+          <DataLine 
+            style={{ top: '28%', right: '0%', width: '80px', transform: 'rotate(0deg)' }}
+            initial="initial"
+            animate="animate"
+            variants={dataLineVariants}
+          />
+          
+          <DataLine 
+            style={{ bottom: '20%', right: '12%', width: '70px', transform: 'rotate(-45deg)' }}
+            initial="initial"
+            animate="animate"
+            variants={dataLineVariants}
+          />
+          
+          <DataLine 
+            style={{ bottom: '35%', left: '0%', width: '70px', transform: 'rotate(0deg)' }}
+            initial="initial"
+            animate="animate"
+            variants={dataLineVariants}
+          />
+          
+          <DataLine 
+            style={{ top: '30%', left: '8%', width: '70px', transform: 'rotate(45deg)' }}
+            initial="initial"
+            animate="animate"
+            variants={dataLineVariants}
+          />
+          
+          {/* Code blocks */}
+          <CodeBlock
+            style={{ top: '5%', left: '15%' }}
+            initial="initial"
+            animate="animate"
+            variants={codeBlockVariants}
+          >
+            getData()
+          </CodeBlock>
+          
+          <CodeBlock
+            style={{ bottom: '5%', left: '25%' }}
+            initial="initial"
+            animate="animate"
+            variants={codeBlockVariants}
+          >
+            analyze()
+          </CodeBlock>
+          
           <ProfileCircle>
             <ProfileContent>
               <img src="/Profile.jpeg" alt="Muhammad Tayyab" />
