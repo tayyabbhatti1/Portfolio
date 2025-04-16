@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from '@emotion/styled/macro';
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaTwitter, FaCode, FaDatabase, FaChartBar, FaServer, FaLaptopCode } from 'react-icons/fa';
@@ -340,6 +340,7 @@ const FloatingIcon = styled(motion.div)`
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   z-index: 1;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
   
   svg {
     filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
@@ -352,6 +353,7 @@ const DataLine = styled(motion.div)`
   background: linear-gradient(90deg, var(--primary-color), transparent);
   transform-origin: left;
   z-index: 0;
+  box-shadow: 0 0 10px var(--primary-color);
 `;
 
 const CodeBlock = styled(motion.div)`
@@ -421,10 +423,316 @@ const BinaryText = styled(motion.div)`
   z-index: 0;
 `;
 
+const Particle = styled(motion.div)`
+  position: absolute;
+  width: ${props => props.size || '5px'};
+  height: ${props => props.size || '5px'};
+  background: ${props => props.color || 'rgba(99, 102, 241, 0.3)'};
+  border-radius: 50%;
+  filter: blur(1px);
+`;
+
+const GlowingCircle = styled(motion.div)`
+  position: absolute;
+  width: ${props => props.size || '15px'};
+  height: ${props => props.size || '15px'};
+  border-radius: 50%;
+  background: ${props => props.color || 'rgba(99, 102, 241, 0.2)'};
+  filter: blur(5px);
+`;
+
+const TypingContainer = styled.div`
+  display: inline-block;
+  position: relative;
+`;
+
+const Cursor = styled.span`
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: var(--primary-color);
+  animation: blink 1s step-end infinite;
+  margin-left: 5px;
+  
+  @keyframes blink {
+    from, to { opacity: 1; }
+    50% { opacity: 0; }
+  }
+`;
+
+const AnimatedCircuit = styled(motion.div)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+`;
+
+const CircuitLine = styled(motion.div)`
+  position: absolute;
+  background: ${props => props.color || 'rgba(99, 102, 241, 0.2)'};
+  height: ${props => props.height || '2px'};
+  width: ${props => props.width || '100px'};
+  transform-origin: left center;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: ${props => props.nodeSize || '6px'};
+    height: ${props => props.nodeSize || '6px'};
+    border-radius: 50%;
+    background: ${props => props.nodeColor || 'rgba(99, 102, 241, 0.7)'};
+    box-shadow: 0 0 10px ${props => props.nodeColor || 'rgba(99, 102, 241, 0.7)'};
+  }
+`;
+
+const TechWord = styled(motion.div)`
+  position: absolute;
+  font-family: 'Consolas', monospace;
+  font-size: 12px;
+  color: ${props => props.color || 'rgba(99, 102, 241, 0.5)'};
+  background: rgba(0, 0, 0, 0.2);
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+`;
+
+const LightBeam = styled(motion.div)`
+  position: absolute;
+  width: 2px;
+  background: ${props => props.color || 'rgba(99, 102, 241, 0.5)'};
+  transform-origin: bottom;
+  filter: blur(1px);
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${props => props.beamColor || 'rgba(99, 102, 241, 0.9)'};
+    box-shadow: 0 0 15px 5px ${props => props.beamColor || 'rgba(99, 102, 241, 0.5)'};
+  }
+`;
+
+const Hexagon = styled(motion.div)`
+  position: absolute;
+  width: ${props => props.size || '30px'};
+  height: calc(${props => props.size || '30px'} * 0.866);
+  background: ${props => props.bg || 'rgba(99, 102, 241, 0.1)'};
+  border: 1px solid ${props => props.borderColor || 'rgba(99, 102, 241, 0.3)'};
+  
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: calc(${props => props.size || '30px'} / 2) solid transparent;
+    border-right: calc(${props => props.size || '30px'} / 2) solid transparent;
+  }
+  
+  &:before {
+    bottom: 100%;
+    border-bottom: calc(${props => props.size || '30px'} * 0.433) solid ${props => props.bg || 'rgba(99, 102, 241, 0.1)'};
+  }
+  
+  &:after {
+    top: 100%;
+    border-top: calc(${props => props.size || '30px'} * 0.433) solid ${props => props.bg || 'rgba(99, 102, 241, 0.1)'};
+  }
+`;
+
+const ProfileRing = styled(motion.div)`
+  position: absolute;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  border-top: 4px solid rgba(99, 102, 241, 0.7);
+  border-left: 4px solid rgba(16, 185, 129, 0.7);
+  border-bottom: 4px solid rgba(245, 158, 11, 0.7);
+  border-right: 4px solid rgba(239, 68, 68, 0.7);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+`;
+
+const FloatingText3D = styled(motion.div)`
+  position: absolute;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: ${props => props.size || '18px'};
+  color: ${props => props.color || 'var(--primary-color)'};
+  text-shadow: 
+    0 2px 5px rgba(0, 0, 0, 0.3),
+    0 0 20px ${props => props.glowColor || 'rgba(99, 102, 241, 0.5)'};
+  white-space: nowrap;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+`;
+
+const DotGrid = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(${props => props.cols || 10}, 1fr);
+  grid-template-rows: repeat(${props => props.rows || 10}, 1fr);
+  opacity: 0.3;
+`;
+
+const Dot = styled(motion.div)`
+  width: 2px;
+  height: 2px;
+  background-color: ${props => props.color || 'rgba(99, 102, 241, 0.5)'};
+  border-radius: 50%;
+`;
+
+// Functions to generate tech-themed elements
+const generateCircuitLines = (count = 15) => {
+  return Array.from({ length: count }).map((_, i) => ({
+    id: i,
+    x: `${Math.random() * 100}%`,
+    y: `${Math.random() * 100}%`,
+    width: `${Math.random() * 100 + 50}px`,
+    height: `${1 + Math.random() * 2}px`,
+    rotation: Math.random() * 360,
+    color: i % 5 === 0 
+      ? 'rgba(99, 102, 241, 0.3)' 
+      : i % 5 === 1 
+        ? 'rgba(16, 185, 129, 0.3)' 
+        : i % 5 === 2
+          ? 'rgba(245, 158, 11, 0.3)'
+          : i % 5 === 3
+            ? 'rgba(239, 68, 68, 0.3)'
+            : 'rgba(139, 92, 246, 0.3)',
+    nodeColor: i % 5 === 0 
+      ? 'rgba(99, 102, 241, 0.7)' 
+      : i % 5 === 1 
+        ? 'rgba(16, 185, 129, 0.7)' 
+        : i % 5 === 2
+          ? 'rgba(245, 158, 11, 0.7)'
+          : i % 5 === 3
+            ? 'rgba(239, 68, 68, 0.7)'
+            : 'rgba(139, 92, 246, 0.7)',
+    duration: 3 + Math.random() * 5
+  }));
+};
+
+const generateTechWords = () => {
+  const words = [
+    'CRM', 'Siebel', 'Analytics', 'Data', 'SQL', 
+    'AI', 'API', 'Cloud', 'Python', 'ETL', 
+    'Dashboard', 'Metrics', 'Insights', 'ROI', 'KPI'
+  ];
+  
+  return words.map((word, i) => ({
+    id: i,
+    word,
+    x: `${Math.random() * 80 + 10}%`,
+    y: `${Math.random() * 80 + 10}%`,
+    color: i % 5 === 0 
+      ? 'rgba(99, 102, 241, 0.8)' 
+      : i % 5 === 1 
+        ? 'rgba(16, 185, 129, 0.8)' 
+        : i % 5 === 2
+          ? 'rgba(245, 158, 11, 0.8)'
+          : i % 5 === 3
+            ? 'rgba(239, 68, 68, 0.8)'
+            : 'rgba(139, 92, 246, 0.8)',
+    delay: i * 0.2,
+    duration: 3 + Math.random() * 7
+  }));
+};
+
+const generateLightBeams = (count = 8) => {
+  return Array.from({ length: count }).map((_, i) => ({
+    id: i,
+    x: `${Math.random() * 100}%`,
+    height: `${50 + Math.random() * 150}px`,
+    color: i % 4 === 0 
+      ? 'rgba(99, 102, 241, 0.3)' 
+      : i % 4 === 1 
+        ? 'rgba(16, 185, 129, 0.3)' 
+        : i % 4 === 2
+          ? 'rgba(245, 158, 11, 0.3)'
+          : 'rgba(239, 68, 68, 0.3)',
+    beamColor: i % 4 === 0 
+      ? 'rgba(99, 102, 241, 0.7)' 
+      : i % 4 === 1 
+        ? 'rgba(16, 185, 129, 0.7)' 
+        : i % 4 === 2
+          ? 'rgba(245, 158, 11, 0.7)'
+          : 'rgba(239, 68, 68, 0.7)',
+    delay: i * 0.3,
+    duration: 2 + Math.random() * 3
+  }));
+};
+
+const generateHexagons = (count = 10) => {
+  return Array.from({ length: count }).map((_, i) => ({
+    id: i,
+    x: `${Math.random() * 90 + 5}%`,
+    y: `${Math.random() * 90 + 5}%`,
+    size: `${15 + Math.random() * 25}px`,
+    rotation: Math.random() * 30,
+    bg: i % 4 === 0 
+      ? 'rgba(99, 102, 241, 0.05)' 
+      : i % 4 === 1 
+        ? 'rgba(16, 185, 129, 0.05)' 
+        : i % 4 === 2
+          ? 'rgba(245, 158, 11, 0.05)'
+          : 'rgba(239, 68, 68, 0.05)',
+    borderColor: i % 4 === 0 
+      ? 'rgba(99, 102, 241, 0.3)' 
+      : i % 4 === 1 
+        ? 'rgba(16, 185, 129, 0.3)' 
+        : i % 4 === 2
+          ? 'rgba(245, 158, 11, 0.3)'
+          : 'rgba(239, 68, 68, 0.3)',
+    delay: i * 0.15,
+    duration: 20 + Math.random() * 10
+  }));
+};
+
 const Hero = () => {
   // Binary text to display in the background
   const binaryString1 = "10101011010101101010110101011010101101";
   const binaryString2 = "01101001011010010110100101101001011010";
+  
+  // Create refs for animations
+  const containerRef = useRef(null);
+  
+  // Text for typing animation
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const fullText = "Muhammad Tayyab";
+  
+  // Create typing animation effect
+  useEffect(() => {
+    if (displayedText.length < fullText.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(fullText.slice(0, displayedText.length + 1));
+      }, 150);
+      
+      return () => clearTimeout(timeout);
+    } else {
+      setIsTypingComplete(true);
+    }
+  }, [displayedText]);
+  
+  // Generate tech animation elements
+  const circuitLines = generateCircuitLines(15);
+  const techWords = generateTechWords();
+  const lightBeams = generateLightBeams(8);
+  const hexagons = generateHexagons(10);
   
   // Animation variants for elements
   const floatingIconVariants = {
@@ -434,7 +742,21 @@ const Hero = () => {
       transition: {
         duration: 0.3
       }
-    }
+    },
+    initial: { 
+      opacity: 0, 
+      y: 20,
+      x: -20
+    },
+    animate: i => ({
+      opacity: 1,
+      y: 0,
+      x: 0,
+      transition: {
+        duration: 0.6,
+        delay: 0.2 + (i * 0.1)
+      }
+    })
   };
   
   const dataLineVariants = {
@@ -457,22 +779,202 @@ const Hero = () => {
       opacity: 0,
       scale: 0.8
     },
-    animate: {
+    animate: i => ({
       opacity: 1,
       scale: 1,
       transition: {
         duration: 0.5,
-        delay: 1
+        delay: 0.8 + (i * 0.2)
+      }
+    }),
+    hover: {
+      y: -5,
+      boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+      transition: {
+        duration: 0.3
       }
     }
   };
   
+  const pulseAnimation = {
+    initial: {
+      scale: 0.8,
+      opacity: 0.3
+    },
+    animate: {
+      scale: [0.8, 1.2, 0.8],
+      opacity: [0.3, 0.6, 0.3],
+      transition: {
+        duration: 3,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }
+    }
+  };
+  
+  const circuitLineVariants = {
+    initial: {
+      opacity: 0,
+      scaleX: 0
+    },
+    animate: i => ({
+      opacity: [0, 1, 1, 0],
+      scaleX: [0, 1, 1, 1], 
+      transition: {
+        duration: 3 + (i * 0.5),
+        repeat: Infinity,
+        repeatType: "loop",
+        times: [0, 0.1, 0.9, 1],
+        delay: i * 0.2
+      }
+    })
+  };
+  
+  const lightBeamVariants = {
+    initial: {
+      opacity: 0,
+      scaleY: 0,
+      transformOrigin: "bottom"
+    },
+    animate: i => ({
+      opacity: [0, 0.8, 0],
+      scaleY: [0, 1, 1],
+      transition: {
+        duration: 2 + (i * 0.3),
+        repeat: Infinity,
+        repeatType: "loop",
+        ease: "easeInOut",
+        delay: i * 0.2
+      }
+    })
+  };
+  
+  const hexagonVariants = {
+    initial: {
+      opacity: 0,
+      scale: 0.5,
+      rotate: 0
+    },
+    animate: i => ({
+      opacity: [0, 0.7, 0],
+      scale: [0.5, 1, 0.5],
+      rotate: [0, i % 2 === 0 ? 30 : -30],
+      transition: {
+        duration: 10 + (i * 0.5),
+        repeat: Infinity,
+        repeatType: "loop",
+        ease: "easeInOut",
+        delay: i * 0.2,
+        times: [0, 0.5, 1]
+      }
+    })
+  };
+  
+  const techWordVariants = {
+    initial: {
+      opacity: 0,
+      y: 20
+    },
+    animate: i => ({
+      opacity: [0, 1, 0],
+      y: [20, 0, -20],
+      transition: {
+        duration: 5,
+        repeat: Infinity,
+        repeatType: "loop",
+        ease: "easeInOut",
+        delay: i * 0.3
+      }
+    })
+  };
+  
+  const profileRingsAnimation = {
+    animate: {
+      rotate: 360,
+      transition: {
+        duration: 20,
+        repeat: Infinity,
+        ease: "linear"
+      }
+    }
+  };
+  
+  // Generate random particles
+  const particles = Array.from({ length: 20 }).map((_, i) => ({
+    id: i,
+    size: `${Math.random() * 6 + 2}px`,
+    x: `${Math.random() * 100}%`,
+    y: `${Math.random() * 100}%`,
+    color: i % 3 === 0 
+      ? 'rgba(99, 102, 241, 0.3)' 
+      : i % 3 === 1 
+        ? 'rgba(16, 185, 129, 0.3)' 
+        : 'rgba(245, 158, 11, 0.3)',
+    duration: Math.random() * 20 + 10
+  }));
+  
+  const glowingCircles = Array.from({ length: 8 }).map((_, i) => ({
+    id: i,
+    size: `${Math.random() * 20 + 10}px`,
+    x: `${Math.random() * 100}%`,
+    y: `${Math.random() * 100}%`,
+    color: i % 4 === 0 
+      ? 'rgba(99, 102, 241, 0.15)' 
+      : i % 4 === 1 
+        ? 'rgba(16, 185, 129, 0.15)' 
+        : i % 4 === 2
+          ? 'rgba(245, 158, 11, 0.15)'
+          : 'rgba(239, 68, 68, 0.15)',
+    duration: Math.random() * 15 + 10
+  }));
+  
   return (
-    <HeroSection id="home">
+    <HeroSection id="home" ref={containerRef}>
+      {/* Background animations */}
       <AnimatedBackground>
+        {particles.map((particle) => (
+          <Particle
+            key={`particle-${particle.id}`}
+            size={particle.size}
+            color={particle.color}
+            style={{ top: particle.y, left: particle.x }}
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: [0.2, 0.8, 0.2],
+              scale: [1, 1.5, 1],
+              x: [0, Math.random() * 50 - 25, 0],
+              y: [0, Math.random() * 50 - 25, 0]
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: particle.duration,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+        
+        {glowingCircles.map((circle) => (
+          <GlowingCircle
+            key={`circle-${circle.id}`}
+            size={circle.size}
+            color={circle.color}
+            style={{ top: circle.y, left: circle.x }}
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: [0.1, 0.3, 0.1],
+              scale: [1, 1.3, 1]
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: circle.duration,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+        
         <BinaryText
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 0.15 }}
           transition={{ duration: 1.5 }}
           style={{ top: '15%', left: '5%' }}
           size="14px"
@@ -481,7 +983,7 @@ const Hero = () => {
         </BinaryText>
         <BinaryText
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 0.15 }}
           transition={{ duration: 1.5 }}
           style={{ top: '35%', right: '8%' }}
           size="14px"
@@ -490,13 +992,87 @@ const Hero = () => {
         </BinaryText>
         <BinaryText
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 0.15 }}
           transition={{ duration: 1.5 }}
           style={{ bottom: '20%', left: '10%' }}
           size="14px"
         >
           {binaryString1}
         </BinaryText>
+        
+        {/* Circuit animations */}
+        <AnimatedCircuit>
+          {circuitLines.map((line, i) => (
+            <CircuitLine
+              key={`circuit-${line.id}`}
+              color={line.color}
+              width={line.width}
+              height={line.height}
+              nodeColor={line.nodeColor}
+              style={{ 
+                top: line.y, 
+                left: line.x,
+                transform: `rotate(${line.rotation}deg)`
+              }}
+              custom={i}
+              initial="initial"
+              animate="animate"
+              variants={circuitLineVariants}
+            />
+          ))}
+          
+          {lightBeams.map((beam, i) => (
+            <LightBeam
+              key={`beam-${beam.id}`}
+              color={beam.color}
+              beamColor={beam.beamColor}
+              style={{ 
+                bottom: 0,
+                left: beam.x,
+                height: beam.height
+              }}
+              custom={i}
+              initial="initial"
+              animate="animate"
+              variants={lightBeamVariants}
+            />
+          ))}
+          
+          {hexagons.map((hex, i) => (
+            <Hexagon
+              key={`hex-${hex.id}`}
+              bg={hex.bg}
+              borderColor={hex.borderColor}
+              size={hex.size}
+              style={{ 
+                top: hex.y, 
+                left: hex.x,
+                transform: `rotate(${hex.rotation}deg)`
+              }}
+              custom={i}
+              initial="initial"
+              animate="animate"
+              variants={hexagonVariants}
+            />
+          ))}
+          
+          {techWords.map((word, i) => (
+            <TechWord
+              key={`word-${word.id}`}
+              color={word.color}
+              style={{ 
+                top: word.y, 
+                left: word.x
+              }}
+              custom={i}
+              initial="initial"
+              animate="animate"
+              variants={techWordVariants}
+            >
+              {word.word}
+            </TechWord>
+          ))}
+        </AnimatedCircuit>
       </AnimatedBackground>
       
       <HeroContainer>
@@ -507,25 +1083,89 @@ const Hero = () => {
             transition={{ duration: 0.7 }}
           >
             <SubHeading>Hello, I'm</SubHeading>
-            <Heading>Muhammad Tayyab</Heading>
+            <Heading>
+              <TypingContainer>
+                {displayedText}
+                {!isTypingComplete && <Cursor />}
+              </TypingContainer>
+            </Heading>
             <Description>
               A passionate Siebel CRM Developer with expertise in Data Analytics. 
               I specialize in building robust CRM solutions and delivering data-driven insights that drive business value.
             </Description>
             
             <ButtonGroup>
-              <PrimaryButton href="#projects">View Projects</PrimaryButton>
-              <SecondaryButton href="#contact">Contact Me</SecondaryButton>
+              <PrimaryButton 
+                href="#projects"
+                as={motion.a}
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 10px 25px rgba(99, 102, 241, 0.5)"
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                View Projects
+              </PrimaryButton>
+              <SecondaryButton 
+                href="#contact"
+                as={motion.a}
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 10px 25px rgba(99, 102, 241, 0.2)"
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Contact Me
+              </SecondaryButton>
             </ButtonGroup>
             
             <SocialIcons>
-              <SocialIcon href="https://github.com/tayyabbhatti1" target="_blank" rel="noopener noreferrer">
+              <SocialIcon 
+                href="https://github.com/tayyabbhatti1" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                as={motion.a}
+                whileHover={{ 
+                  y: -8,
+                  backgroundColor: "rgba(31, 41, 55, 0.9)",
+                  borderColor: "var(--primary-color)",
+                  color: "var(--primary-color)",
+                  boxShadow: "0 10px 25px rgba(99, 102, 241, 0.4)"
+                }}
+                whileTap={{ scale: 0.9 }}
+              >
                 <FaGithub />
               </SocialIcon>
-              <SocialIcon href="https://www.linkedin.com/in/muhammad-tayyab7/" target="_blank" rel="noopener noreferrer">
+              <SocialIcon 
+                href="https://www.linkedin.com/in/muhammad-tayyab7/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                as={motion.a}
+                whileHover={{ 
+                  y: -8,
+                  backgroundColor: "rgba(31, 41, 55, 0.9)",
+                  borderColor: "var(--primary-color)",
+                  color: "var(--primary-color)",
+                  boxShadow: "0 10px 25px rgba(99, 102, 241, 0.4)"
+                }}
+                whileTap={{ scale: 0.9 }}
+              >
                 <FaLinkedin />
               </SocialIcon>
-              <SocialIcon href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+              <SocialIcon 
+                href="https://twitter.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                as={motion.a}
+                whileHover={{ 
+                  y: -8,
+                  backgroundColor: "rgba(31, 41, 55, 0.9)",
+                  borderColor: "var(--primary-color)",
+                  color: "var(--primary-color)",
+                  boxShadow: "0 10px 25px rgba(99, 102, 241, 0.4)"
+                }}
+                whileTap={{ scale: 0.9 }}
+              >
                 <FaTwitter />
               </SocialIcon>
             </SocialIcons>
@@ -542,9 +1182,9 @@ const Hero = () => {
             bg="linear-gradient(135deg, #6366f1, #4f46e5)"
             rounded={false}
             style={{ top: '-10%', right: '30%' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
+            custom={1}
+            initial="initial"
+            animate="animate"
             whileHover="hover"
             variants={floatingIconVariants}
           >
@@ -556,9 +1196,9 @@ const Hero = () => {
             bg="linear-gradient(135deg, #10b981, #059669)"
             rounded={true}
             style={{ top: '20%', right: '-5%' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1 }}
+            custom={2}
+            initial="initial"
+            animate="animate"
             whileHover="hover"
             variants={floatingIconVariants}
           >
@@ -570,9 +1210,9 @@ const Hero = () => {
             bg="linear-gradient(135deg, #f59e0b, #d97706)"
             rounded={false}
             style={{ bottom: '10%', right: '10%' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.3 }}
+            custom={3}
+            initial="initial"
+            animate="animate"
             whileHover="hover"
             variants={floatingIconVariants}
           >
@@ -584,9 +1224,9 @@ const Hero = () => {
             bg="linear-gradient(135deg, #ef4444, #dc2626)"
             rounded={true}
             style={{ bottom: '30%', left: '-5%' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.6 }}
+            custom={4}
+            initial="initial"
+            animate="animate"
             whileHover="hover"
             variants={floatingIconVariants}
           >
@@ -598,9 +1238,9 @@ const Hero = () => {
             bg="linear-gradient(135deg, #8b5cf6, #7c3aed)"
             rounded={false}
             style={{ top: '25%', left: '5%' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.9 }}
+            custom={5}
+            initial="initial"
+            animate="animate"
             whileHover="hover"
             variants={floatingIconVariants}
           >
@@ -646,8 +1286,10 @@ const Hero = () => {
           {/* Code blocks */}
           <CodeBlock
             style={{ top: '5%', left: '15%' }}
+            custom={1}
             initial="initial"
             animate="animate"
+            whileHover="hover"
             variants={codeBlockVariants}
           >
             getData()
@@ -655,18 +1297,106 @@ const Hero = () => {
           
           <CodeBlock
             style={{ bottom: '5%', left: '25%' }}
+            custom={2}
             initial="initial"
             animate="animate"
+            whileHover="hover"
             variants={codeBlockVariants}
           >
             analyze()
           </CodeBlock>
+          
+          {/* Profile rings */}
+          <ProfileRing
+            style={{ 
+              width: 'calc(100% + 30px)', 
+              height: 'calc(100% + 30px)',
+              top: '-15px',
+              left: '-15px'
+            }}
+            animate="animate"
+            variants={profileRingsAnimation}
+          />
+          
+          <ProfileRing
+            style={{ 
+              width: 'calc(100% + 60px)', 
+              height: 'calc(100% + 60px)',
+              top: '-30px',
+              left: '-30px',
+              borderWidth: '3px'
+            }}
+            animate={{ 
+              rotate: -360,
+              transition: {
+                duration: 30,
+                repeat: Infinity,
+                ease: "linear"
+              }
+            }}
+          />
+          
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={pulseAnimation}
+            style={{ 
+              position: 'absolute', 
+              width: '100%',
+              height: '100%',
+              borderRadius: '50%',
+              zIndex: 0
+            }}
+          />
           
           <ProfileCircle>
             <ProfileContent>
               <img src="/Profile.jpeg" alt="Muhammad Tayyab" />
             </ProfileContent>
           </ProfileCircle>
+          
+          {/* 3D Text elements */}
+          <FloatingText3D
+            style={{ top: '-20%', right: '10%' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              rotateX: [0, 10, 0, -10, 0],
+              rotateY: [0, 15, 0, -15, 0]
+            }}
+            transition={{ 
+              duration: 8, 
+              delay: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut" 
+            }}
+            color="rgba(16, 185, 129, 0.9)"
+            glowColor="rgba(16, 185, 129, 0.5)"
+          >
+            Data Expert
+          </FloatingText3D>
+          
+          <FloatingText3D
+            style={{ bottom: '-15%', left: '5%' }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              rotateX: [0, -10, 0, 10, 0],
+              rotateY: [0, -15, 0, 15, 0]
+            }}
+            transition={{ 
+              duration: 8, 
+              delay: 2,
+              repeat: Infinity,
+              ease: "easeInOut" 
+            }}
+            color="rgba(99, 102, 241, 0.9)"
+            glowColor="rgba(99, 102, 241, 0.5)"
+          >
+            CRM Developer
+          </FloatingText3D>
         </HeroImage>
       </HeroContainer>
     </HeroSection>
